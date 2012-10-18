@@ -14,9 +14,9 @@ It creates a mysql database and populates it with sql deltas from src/sql dir. T
 Requirements
 ============
 
-Download vagrant latest binaries from 
+Download Virtualbox [http://www.virtualbox.org/wiki/Downloads](http://www.virtualbox.org/wiki/Downloads)
 
-	http://vagrantup.com
+Download vagrant latest binaries from [http://vagrantup.com](http://vagrantup.com)
 
 
 Add base image

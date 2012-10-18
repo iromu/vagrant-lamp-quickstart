@@ -1,0 +1,46 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+
+  config.vm.box = "lucid32"
+
+  config.vm.host_name = "vagrant-lamp-quickstart"
+
+  config.vm.customize ["modifyvm", :id, "--memory", 256]
+
+  config.vm.share_folder "quickstart",
+                           "/var/www/quickstart",
+                           "../../",
+                           :owner => "www-data", :group => "vagrant"
+
+  config.vm.network :hostonly, "10.11.122.131", :netmask => "255.255.0.0"
+
+  config.vm.provision :chef_solo do |chef|
+    chef.json = {
+        :mysql => {
+            :server_root_password => "root",
+            :bind_address => '0.0.0.0'
+        }
+    }
+
+    chef.cookbooks_path = "cookbooks"
+
+    chef.add_recipe "build-essential"
+    chef.add_recipe "apt"
+    chef.add_recipe "openssl"
+    chef.add_recipe "apache2"
+    chef.add_recipe "mysql"
+    chef.add_recipe "mysql::server"
+    chef.add_recipe "php"
+    chef.add_recipe "php::module_apc"
+    chef.add_recipe "php::module_curl"
+    chef.add_recipe "php::module_mysql"
+    chef.add_recipe "apache2::mod_php5"
+    chef.add_recipe "apache2::mod_rewrite"
+
+    chef.add_recipe("quickstart")
+    chef.add_recipe("quickstart::database")
+  end
+
+end
